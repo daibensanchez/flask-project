@@ -23,7 +23,8 @@ def dashboard():
 @app.route('/book',methods=['GET'])
 def getbooks():
     books = getbook()
-    return render_template('bookList.html',books=books)
+    genres = getgenres()
+    return render_template('bookList.html',books=books, genres=genres)
 
 
 @app.route('/users', methods=['GET'])
@@ -38,6 +39,7 @@ def getgenre():
 @app.route('/genre', methods=['POST'])
 def addgenres():
     addgenre()
+    flash('Genre successfully added!')
     return redirect('/genre')
 
 @app.route('/genre/<gid>')
@@ -45,6 +47,12 @@ def deletegenres(gid):
     deletegenre(gid)
     flash('Genre successfully deleted.')
     return redirect('/genre')
+
+@app.route('/genre/addbook/<gid>')
+def addbooktogenre(gid):
+    addbookgenre(gid)
+    flash('Genre successfully added!')
+    return redirect('/genre/addbook/' + gid)
 
 @app.route('/users', methods=['POST'])
 def register():
@@ -55,18 +63,15 @@ def register():
 @app.route('/users/viewlist', methods=['GET'])
 def userslist():
     rows = getusers()
-    #print rows
+    print rows
     return jsonify(rows)
 
 @app.route('/users/list', methods=['GET'])
 def listuser():
-    #userslist()
+    userslist()
     return render_template('userList.html')
 
 @app.route('/users/<username>', methods=['GET'])
 def getspecificuser(username):
     users = searchusers(username)
-    listuser()
-    #print users
-    return jsonify(users)
-
+    return render_template('users.html', users=users, username=username)
