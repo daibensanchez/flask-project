@@ -55,16 +55,18 @@ def register():
 @app.route('/users/viewlist', methods=['GET'])
 def userslist():
     rows = getusers()
-    print rows
+    #print rows
     return jsonify(rows)
+
+@app.route('/users/list', methods=['GET'])
+def listuser():
+    #userslist()
+    return render_template('userList.html')
 
 @app.route('/users/<username>', methods=['GET'])
 def getspecificuser(username):
     users = searchusers(username)
-    print users
-    return render_template('userList.html', users=users)
+    listuser()
+    #print users
+    return jsonify(users)
 
-@app.route('/users/list', methods=['GET'])
-def listuser():
-    userslist()
-    return render_template('userList.html')
